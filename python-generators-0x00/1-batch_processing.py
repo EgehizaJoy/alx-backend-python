@@ -10,6 +10,7 @@ def stream_users_in_batches(batch_size):
         port=3307
     )
     cursor = connection.cursor(dictionary=True)
+    users = []
     try:
         cursor.execute("SELECT * FROM user_data")
         batch = []
@@ -18,16 +19,18 @@ def stream_users_in_batches(batch_size):
                 row["age"] = int(row["age"])
             batch.append(row)
             if len(batch) == batch_size:
-                yield batch
+                users.append(batch)
                 batch = []
         if batch:
-            yield batch
+            users.append(batch)
+        return users
     finally:
         cursor.close()
         connection.close()
 
 def batch_processing(batch_size):
-    for batch in stream_users_in_batches(batch_size):
+    all_batches = stream_users_in_batches(batch_size)
+    for batch in all_batches:
         for user in batch:
             if user["age"] > 25:
                 print(user)
