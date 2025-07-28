@@ -16,3 +16,19 @@ class TestAccessNestedMap(unittest.TestCase):
     def test_access_nested_map(self, nested_map, path, expected):
         """Test correct return values from access_nested_map"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
+from utils import access_nested_map
+from parameterized import parameterized
+import unittest
+
+
+class TestAccessNestedMap(unittest.TestCase):
+    """Tests for access_nested_map"""
+
+    @parameterized.expand([
+        ({}, ("a",)),
+        ({"a": 1}, ("a", "b")),
+    ])
+    def test_access_nested_map_exception(self, nested_map, path):
+        with self.assertRaises(KeyError) as cm:
+            access_nested_map(nested_map, path)
+        self.assertEqual(str(cm.exception), f"'{path[-1]}'")
