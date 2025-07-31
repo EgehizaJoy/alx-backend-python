@@ -59,3 +59,18 @@ class OffensiveLanguageMiddleware:
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
+class RolePermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        user = request.user
+        # Check if user is authenticated and has role attribute
+        if user.is_authenticated:
+            user_role = getattr(user, 'role', None)
+            if user_role not in ['admin', 'moderator']:
+                return HttpResponseForbidden("Access denied: insufficient permissions.")
+        else:
+            return HttpResponseForbidden("Access denied: authentication required.")
+        
+        return self.get_response(request)
