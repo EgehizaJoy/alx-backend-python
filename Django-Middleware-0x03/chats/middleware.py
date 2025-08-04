@@ -74,3 +74,11 @@ class RolePermissionMiddleware:
             return HttpResponseForbidden("Access denied: authentication required.")
         
         return self.get_response(request)
+class RolepermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Add role-based permission logic here if needed
+        response = self.get_response(request)
+        return response
