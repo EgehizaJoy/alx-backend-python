@@ -22,3 +22,5 @@ EXPOSE 8000
 
 # Default command to run the Django server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run the server with port binding
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "-p", "8000"]
