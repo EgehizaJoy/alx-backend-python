@@ -1,18 +1,12 @@
 #!/bin/bash
-# kurbeScript - Starts Kubernetes cluster locally, verifies, lists pods
+# Starts Kubernetes cluster, verifies it, lists pods
 
-# Ensure minikube is installed
 if ! command -v minikube >/dev/null 2>&1; then
-    echo "Minikube is not installed. Please install it first."
+    echo "Minikube is not installed."
     exit 1
 fi
 
-# Start the Kubernetes cluster
 minikube start
-
-# Verify the cluster is running
 kubectl cluster-info
-
-# Retrieve available pods
 kubectl get pods --all-namespaces
 
