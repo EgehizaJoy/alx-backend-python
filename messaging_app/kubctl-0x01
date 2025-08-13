@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Scale the Django app deployment to 3 replicas
+kubectl scale deployment messaging-app --replicas=3
+
+# Verify pods are running
+echo "=== Checking running pods ==="
+kubectl get pods -o wide
+
+# Load testing with wrk (adjust URL to your service or NodePort)
+# Replace <service-name> and <port> with your Django service details
+echo "=== Starting load test with wrk ==="
+wrk -t4 -c50 -d30s http://<service-name>:<port>/
+
+# Monitor resource usage
+echo "=== Monitoring resource usage ==="
+kubectl top pods
