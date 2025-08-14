@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Apply the updated deployment (version 2.0)
+kubectl apply -f blue_deployment.yaml
+
+# Trigger and monitor rolling update
+kubectl rollout status deployment/django-blue
+
+# Test downtime by sending continuous requests in the background
+echo "Testing for downtime..."
+for i in {1..20}
+do
+    curl -s http://django-service:80 || echo "Request failed!"
+    sleep 1
+done
+
+# Show pods after rollout
+echo "Current running pods:"
+kubectl get pods -l app=django-blue -o wide
