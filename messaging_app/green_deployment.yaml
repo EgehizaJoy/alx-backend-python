@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: django-green
+  template:
+    metadata:
+      labels:
+        app: django-green
+    spec:
+      containers:
+      - name: django-green
+        image: your-dockerhub-username/django-app:green
+        ports:
+        - containerPort: 8000

@@ -1,0 +1,10 @@
+#!/bin/bash
+# Deploy blue version
+kubectl apply -f blue_deployment.yaml
+kubectl apply -f kubeservice.yaml
+
+# Deploy green version
+kubectl apply -f green_deployment.yaml
+
+# Check logs for green version
+kubectl logs -l app=django-green
