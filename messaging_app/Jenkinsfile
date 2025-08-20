@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Replace with your GitHub repo credentials ID you add in Jenkins
+        // Replace with your GitHub repo credentials ID
         GITHUB_CREDENTIALS = 'github-creds'
-        // Python virtual environment directory
         VENV_DIR = '.venv'
     }
 
@@ -42,8 +41,5 @@ pipeline {
             }
         }
     }
-
-    triggers {
-        // Manual trigger only (disable SCM poll for now)
-    }
 }
+
