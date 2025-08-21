@@ -1,0 +1,8 @@
+# Enable NGINX Ingress in Minikube
+minikube addons enable ingress
+
+# OR for a generic Kubernetes cluster:
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+# Apply your Ingress configuration
+kubectl apply -f ingress.yaml
