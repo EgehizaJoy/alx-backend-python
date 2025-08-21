@@ -1,0 +1,26 @@
+#!/bin/bash
+# kubctl-0x02
+# Objective: Perform zero-downtime deployment using Blue-Green strategy.
+
+set -e
+
+NAMESPACE="default"
+
+echo "📌 Deploying BLUE version..."
+kubectl apply -f blue_deployment.yaml -n $NAMESPACE
+kubectl rollout status deployment/django-blue -n $NAMESPACE
+
+echo "📌 Deploying GREEN version..."
+kubectl apply -f green_deployment.yaml -n $NAMESPACE
+kubectl rollout status deployment/django-green -n $NAMESPACE
+
+echo "📌 Checking logs for GREEN version..."
+POD=$(kubectl get pods -n $NAMESPACE -l app=django,version=green -o jsonpath='{.items[0].metadata.name}')
+kubectl logs $POD -n $NAMESPACE --tail=50
+
+echo "📌 Applying service (currently points to BLUE)..."
+kubectl apply -f kubeservice.yaml -n $NAMESPACE
+
+echo "✅ To switch traffic from BLUE to GREEN:"
+echo "Edit kubeservice.yaml and change 'version: blue' → 'version: green', then run:"
+echo "kubectl apply -f kubeservice.yaml -n $NAMESPACE"
